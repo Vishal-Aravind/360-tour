@@ -1,0 +1,94 @@
+{
+  "default": {
+    "firstScene": "livingroom",
+    "sceneFadeDuration": 1000
+  },
+  "scenes": {
+    "livingroom": {
+      "title": "Living Room",
+      "panorama": "livingroom.jpg",
+      "hotSpots": [
+        {
+          "pitch": 0,
+          "yaw": 60,
+          "type": "scene",
+          "text": "Go to Kitchen",
+          "sceneId": "kitchen"
+        },
+        {
+          "pitch": 5,
+          "yaw": 120,
+          "type": "scene",
+          "text": "Go to Bedroom 1",
+          "sceneId": "bedroom1"
+        }
+      ]
+    },
+    "kitchen": {
+      "title": "Kitchen",
+      "panorama": "kitchen.jpg",
+      "hotSpots": [
+        {
+          "pitch": 0,
+          "yaw": -90,
+          "type": "scene",
+          "text": "Back to Living Room",
+          "sceneId": "livingroom"
+        },
+        {
+          "pitch": 0,
+          "yaw": 90,
+          "type": "scene",
+          "text": "Go to Bedroom 2",
+          "sceneId": "bedroom2"
+        }
+      ]
+    },
+    "bedroom1": {
+      "title": "Bedroom 1",
+      "panorama": "bedroom1.jpg",
+      "hotSpots": [
+        {
+          "pitch": 0,
+          "yaw": -100,
+          "type": "scene",
+          "text": "Back to Living Room",
+          "sceneId": "livingroom"
+        },
+        {
+          "pitch": 0,
+          "yaw": 50,
+          "type": "scene",
+          "text": "Go to Bedroom 3",
+          "sceneId": "bedroom3"
+        }
+      ]
+    },
+    "bedroom2": {
+      "title": "Bedroom 2",
+      "panorama": "bedroom2.jpg",
+      "hotSpots": [
+        {
+          "pitch": 0,
+          "yaw": -60,
+          "type": "scene",
+          "text": "Back to Kitchen",
+          "sceneId": "kitchen"
+        }
+      ]
+    },
+    "bedroom3": {
+      "title": "Bedroom 3",
+      "panorama": "bedroom3.jpg",
+      "hotSpots": [
+        {
+          "pitch": 0,
+          "yaw": -90,
+          "type": "scene",
+          "text": "Back to Bedroom 1",
+          "sceneId": "bedroom1"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>360° VR Tour - Split View with Gyroscope</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
+  <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background-color: #000;
+    }
+
+    #controls {
+      position: absolute;
+      z-index: 1000;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    #panorama-left, #panorama-right {
+      display: none;
+      width: 50vw;
+      height: 100vh;
+      float: left;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #00bcd4;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- VR Button -->
+  <div id="controls">
+    <button onclick="enterVR()">Enter VR Mode</button>
+  </div>
+
+  <!-- Two Viewers for Split VR -->
+  <div id="panorama-left"></div>
+  <div id="panorama-right"></div>
+
+  <script>
+    let config;
+    let viewerLeft, viewerRight;
+
+    // Fetch config and add gyroscope support
+    fetch("exampletour.json")
+      .then(res => res.json())
+      .then(json => {
+        config = json;
+
+        // Enable gyroscope by default
+        config.default = config.default || {};
+        config.default.orientationOnByDefault = true;
+      });
+
+    function enterVR() {
+      document.getElementById("controls").style.display = "none";
+      document.getElementById("panorama-left").style.display = "block";
+      document.getElementById("panorama-right").style.display = "block";
+
+      const body = document.body;
+      if (body.requestFullscreen) body.requestFullscreen();
+      else if (body.webkitRequestFullscreen) body.webkitRequestFullscreen();
+      else if (body.msRequestFullscreen) body.msRequestFullscreen();
+
+      // Load same scene into both viewers
+      viewerLeft = pannellum.viewer('panorama-left', config);
+      viewerRight = pannellum.viewer('panorama-right', config);
+
+      // Sync right view with left in real-time
+      setTimeout(() => {
+        function syncLoop() {
+          const yaw = viewerLeft.getYaw();
+          const pitch = viewerLeft.getPitch();
+          const hfov = viewerLeft.getHfov();
+          viewerRight.setYaw(yaw);
+          viewerRight.setPitch(pitch);
+          viewerRight.setHfov(hfov);
+          requestAnimationFrame(syncLoop);
+        }
+        syncLoop();
+      }, 1000);
+
+      // Sync scene changes from left ➜ right
+      viewerLeft.on("scenechange", sceneId => {
+        viewerRight.loadScene(sceneId);
+      });
+    }
+  </script>
+
+</body>
+</html>
